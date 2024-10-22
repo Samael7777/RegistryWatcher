@@ -1,11 +1,14 @@
-﻿namespace PhoenixTools.Watchers.PInvoke;
+﻿using System;
 
-[Flags]
-internal enum RegNotify
+namespace PhoenixTools.Watchers.PInvoke
 {
-    ChangeAttributes = 2,
-    ChangeSecurity = 8,
-    ChangeLastSet = 4,
-    ChangeName = 1,
-    ThreadAgnostic = 0x10000000,
+    [Flags]
+    internal enum RegNotify
+    {
+        ChangeAttributes = 2,
+        ChangeSecurity = 8,
+        ChangeLastSet = 4,
+        ChangeName = 1,
+        ThreadAgnostic = 0x10000000,
+    }
 }

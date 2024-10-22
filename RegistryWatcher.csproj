@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
     <RootNamespace>PhoenixTools.Watchers</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>PhoenixTools.RegistryWatcher</Title>
@@ -13,8 +13,10 @@ which listens to the windows registry change notifications and raises events whe
 specified subkey changes.</Description>
     <Copyright>Copyright 2024 </Copyright>
     <PackageTags>registry watcher; watcher</PackageTags>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Samael7777/RegistryWatcher</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Samael7777/RegistryWatcher</RepositoryUrl>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
