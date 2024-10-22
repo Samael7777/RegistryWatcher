@@ -1,7 +1,7 @@
 ﻿using System.Timers;
 using Timer = System.Timers.Timer;
 
-namespace Watchers;
+namespace PhoenixTools.Watchers;
 
 public class EventsFilter : IDisposable
 {

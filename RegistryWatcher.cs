@@ -1,6 +1,6 @@
-﻿using Watchers.PInvoke;
+﻿using PhoenixTools.Watchers.PInvoke;
 
-namespace Watchers;
+namespace PhoenixTools.Watchers;
 
 public class RegistryWatcher : IDisposable
 {

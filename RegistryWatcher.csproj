@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>PhoenixTools.Watchers</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>PhoenixTools.RegistryWatcher</Title>
+    <Authors>Vadim Kutin</Authors>
+    <Description>Provides the PhoenixTools.Watchers.RegisrtryWatcher class, 
+which listens to the windows registry change notifications and raises events when a 
+specified subkey changes.</Description>
+    <Copyright>Copyright 2024 </Copyright>
+    <PackageTags>registry watcher; watcher</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

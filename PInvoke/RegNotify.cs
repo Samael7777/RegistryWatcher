@@ -1,4 +1,4 @@
-﻿namespace Watchers.PInvoke;
+﻿namespace PhoenixTools.Watchers.PInvoke;
 
 [Flags]
 internal enum RegNotify

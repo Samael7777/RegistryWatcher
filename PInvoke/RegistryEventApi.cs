@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Watchers.PInvoke;
+namespace PhoenixTools.Watchers.PInvoke;
 
 internal static class RegistryEventApi
 {

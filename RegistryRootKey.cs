@@ -1,6 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 // ReSharper disable IdentifierTypo
-namespace Watchers;
+namespace PhoenixTools.Watchers;
 
 public enum RegistryRootKey : uint
 {
