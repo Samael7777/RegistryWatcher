@@ -7,6 +7,8 @@ namespace PhoenixTools.Watchers.PInvoke
 {
     internal static class WinApi
     {
+        private const uint ErrorSuccess = 0x80070000;
+
         [DllImport("advapi32.dll")]
         public static extern int RegNotifyChangeKeyValue(SafeRegKeyHandle hKey,
             [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree,
@@ -23,9 +25,6 @@ namespace PhoenixTools.Watchers.PInvoke
         public static extern SafeEventHandle CreateEvent(IntPtr lpEventAttributes,
             [MarshalAs(UnmanagedType.Bool)] bool bManualReset,
             [MarshalAs(UnmanagedType.Bool)] bool bInitialState, [In] [MarshalAs(UnmanagedType.LPWStr)] string lpName);
-
-        [DllImport("kernel32.dll")]
-        public static extern uint WaitForSingleObject(SafeEventHandle hHandle, uint dwMilliseconds);
 
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -48,7 +47,7 @@ namespace PhoenixTools.Watchers.PInvoke
         public static void ThrowExceptionOnError(int hResult)
         {
             var exception = Marshal.GetExceptionForHR(hResult);
-            if (exception != null && (uint)exception.HResult != 0x80070000) throw exception;
+            if (exception != null && (uint)exception.HResult != ErrorSuccess) throw exception;
         }
 
         public static void ThrowExceptionOnLastWin32Error()
