@@ -16,6 +16,7 @@ namespace PhoenixTools.Watchers
 
         public event EventHandler RegistryChanged; 
 
+        // ReSharper disable once ConvertToPrimaryConstructor
         public RegistryWatcher(RegistryRootKey root, string subKey, bool watchSubtree)
         {
             _watchSubtree = watchSubtree;

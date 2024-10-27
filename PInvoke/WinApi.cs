@@ -24,7 +24,7 @@ namespace PhoenixTools.Watchers.PInvoke
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern SafeEventHandle CreateEvent(IntPtr lpEventAttributes,
             [MarshalAs(UnmanagedType.Bool)] bool bManualReset,
-            [MarshalAs(UnmanagedType.Bool)] bool bInitialState, [In] [MarshalAs(UnmanagedType.LPWStr)] string lpName);
+            [MarshalAs(UnmanagedType.Bool)] bool bInitialState, [In] IntPtr lpNamePtr);
 
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
