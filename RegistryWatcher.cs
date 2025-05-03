@@ -25,11 +25,11 @@ namespace PhoenixTools.Watchers
             _waitEventTask = null;
         }
 
-        public bool IsWatching => _waitEventTask == null;
+        public bool IsWatching => _waitEventTask != null;
 
         public void Start()
         {
-            if (_waitEventTask != null) return;
+            if (IsWatching) return;
 
             _cancellationEvent.ResetEvent();
             _waitEventTask = Task.Run(WaitProc);
@@ -37,7 +37,7 @@ namespace PhoenixTools.Watchers
 
         public void Stop()
         {
-            if (_waitEventTask == null) return;
+            if (!IsWatching) return;
 
             _cancellationEvent.SetEvent();
             _waitEventTask?.Wait();
