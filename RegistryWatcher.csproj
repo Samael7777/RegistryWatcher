@@ -18,8 +18,8 @@ specified subkey changes.</Description>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Version>1.0.2</Version>
-    <PackageReleaseNotes>Fix hardcoded RegistryRootKey.HKEY_CURRENT_USER in RegistryEventApi.OpenRegistryKey method</PackageReleaseNotes>
+    <Version>1.0.3</Version>
+    <PackageReleaseNotes>RegistryWatcher.IsWatching property fix</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
