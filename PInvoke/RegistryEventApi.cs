@@ -8,7 +8,7 @@ namespace PhoenixTools.Watchers.PInvoke
         public static SafeRegKeyHandle OpenRegistryKey(RegistryRootKey root, string subKey)
         {
             // ReSharper disable once RedundantOverflowCheckingContext
-            var error = WinApi.RegOpenKeyEx(unchecked((IntPtr)RegistryRootKey.HKEY_CURRENT_USER), subKey, 0, 0x0010,
+            var error = WinApi.RegOpenKeyEx(unchecked((IntPtr)root), subKey, 0, 0x0010,
                 out var handle);
             WinApi.ThrowExceptionOnError(error);
             return handle;
