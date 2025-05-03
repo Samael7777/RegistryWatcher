@@ -11,7 +11,7 @@
     <Description>Provides the PhoenixTools.Watchers.RegisrtryWatcher class, 
 which listens to the windows registry change notifications and raises events when a 
 specified subkey changes.</Description>
-    <Copyright>Copyright 2024 </Copyright>
+    <Copyright>Copyright 2024-2025</Copyright>
     <PackageTags>registry watcher; watcher</PackageTags>
     <PackageProjectUrl>https://github.com/Samael7777/RegistryWatcher</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Samael7777/RegistryWatcher</RepositoryUrl>
@@ -19,6 +19,7 @@ specified subkey changes.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Version>1.0.2</Version>
+    <PackageReleaseNotes>Fix hardcoded RegistryRootKey.HKEY_CURRENT_USER in RegistryEventApi.OpenRegistryKey method</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
