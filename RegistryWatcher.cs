@@ -1,6 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using PhoenixTools.Watchers.PInvoke;
+using Windows.Win32.Foundation;
+using Windows.Win32.System.Registry;
 
 namespace PhoenixTools.Watchers
 {
@@ -8,9 +11,9 @@ namespace PhoenixTools.Watchers
     {
         private const uint TimeoutInfinite = 0xFFFFFFFF;
 
-        private readonly SafeRegKeyHandle _regHandle;
+        private readonly SafeHandle _regHandle;
         private readonly bool _watchSubtree;
-        private readonly SafeEventHandle _cancellationEvent;
+        private readonly SafeHandle _cancellationEvent;
 
         private Task _waitEventTask;
 
@@ -20,7 +23,7 @@ namespace PhoenixTools.Watchers
         public RegistryWatcher(RegistryRootKey root, string subKey, bool watchSubtree)
         {
             _watchSubtree = watchSubtree;
-            _regHandle = RegistryEventApi.OpenRegistryKey(root, subKey);
+            _regHandle = RegistryEventApi.OpenRegistryKey(new HKEY((IntPtr)root), subKey);
             _cancellationEvent = RegistryEventApi.CreateEventHandle(false, true);
             _waitEventTask = null;
         }
@@ -31,7 +34,7 @@ namespace PhoenixTools.Watchers
         {
             if (IsWatching) return;
 
-            _cancellationEvent.ResetEvent();
+            RegistryEventApi.ResetEvent(_cancellationEvent);
             _waitEventTask = Task.Run(WaitProc);
         }
 
@@ -39,7 +42,7 @@ namespace PhoenixTools.Watchers
         {
             if (!IsWatching) return;
 
-            _cancellationEvent.SetEvent();
+            RegistryEventApi.SetEvent(_cancellationEvent);
             _waitEventTask?.Wait();
             _waitEventTask = null;
         }
@@ -48,7 +51,7 @@ namespace PhoenixTools.Watchers
         {
             using (var regChangedEvent = RegistryEventApi.CreateEventHandle(false, false))
             {
-                var events = new[] { regChangedEvent.DangerousGetHandle(), _cancellationEvent.DangerousGetHandle() };
+                var events = new[] { regChangedEvent, _cancellationEvent };
                 var isCanceled = false;
 
                 while (!isCanceled)
@@ -59,12 +62,13 @@ namespace PhoenixTools.Watchers
 
                     switch (triggered)
                     {
-                        case WaitState.WaitObject0:
+                        case WAIT_EVENT.WAIT_OBJECT_0:
                             RegistryChanged?.Invoke(this, EventArgs.Empty);
-                            break;
-                        case WaitState.WaitObject0 + 1:
+                            continue;
+                        case WAIT_EVENT.WAIT_OBJECT_0 + 1:
                             isCanceled = true;
                             break;
+                        default: throw new Win32Exception();
                     }
                 }
             }
@@ -103,5 +107,4 @@ namespace PhoenixTools.Watchers
         }
 
         #endregion
-    }
-}
+    } }
