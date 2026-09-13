@@ -1,47 +1,37 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Win32.Foundation;
-using Microsoft.Win32;
-using PhoenixTools.Watchers.API;
+using Windows.Win32.System.Registry;
 
 namespace PhoenixTools.Watchers
 {
     public class RegistryWatcher : IDisposable
     {
         private const uint TimeoutInfinite = 0xFFFFFFFF;
-        private readonly RegistryKey _key;
+
+        private readonly SafeHandle _regHandle;
         private readonly bool _watchSubtree;
         private readonly SafeHandle _cancellationEvent;
 
-        private Task? _waitEventTask;
+        private Task _waitEventTask;
 
-        public event EventHandler? RegistryChanged;
-        
-        public bool IsWatching => _waitEventTask != null;
-        public override string ToString() => _key.Name;
-        
-        public RegistryWatcher(RegistryHive root, string subKey, bool watchSubtree)
+        public event EventHandler RegistryChanged; 
+
+        // ReSharper disable once ConvertToPrimaryConstructor
+        public RegistryWatcher(RegistryRootKey root, string subKey, bool watchSubtree)
         {
-            using var rootKey = RegistryKey.OpenBaseKey(root, RegistryView.Default);
-            _key = rootKey.OpenSubKey(subKey) 
-                   ?? throw new Win32Exception();
-
             _watchSubtree = watchSubtree;
+            _regHandle = RegistryEventApi.OpenRegistryKey(new HKEY((IntPtr)root), subKey);
             _cancellationEvent = RegistryEventApi.CreateEventHandle(false, true);
             _waitEventTask = null;
         }
 
-        [Obsolete("This constructor will be removed in future versions.")]
-        public RegistryWatcher(RegistryRootKey root, string subKey, bool watchSubtree) :
-            this((RegistryHive)root, subKey, watchSubtree) {}
-
+        public bool IsWatching => _waitEventTask != null;
 
         public void Start()
         {
-            CheckDisposed();
             if (IsWatching) return;
 
             RegistryEventApi.ResetEvent(_cancellationEvent);
@@ -50,7 +40,6 @@ namespace PhoenixTools.Watchers
 
         public void Stop()
         {
-            CheckDisposed();
             if (!IsWatching) return;
 
             RegistryEventApi.SetEvent(_cancellationEvent);
@@ -60,25 +49,27 @@ namespace PhoenixTools.Watchers
 
         private void WaitProc()
         {
-            using var regChangedEvent = RegistryEventApi.CreateEventHandle(false, false);
-            var events = new[] { regChangedEvent, _cancellationEvent };
-            var isCanceled = false;
-
-            while (!isCanceled)
+            using (var regChangedEvent = RegistryEventApi.CreateEventHandle(false, false))
             {
-                RegistryEventApi.TriggerUpRegistryEvent(_key.Handle, regChangedEvent, _watchSubtree);
-                var triggered = RegistryEventApi.WaitForMultipleEvents
-                    (events, false, TimeoutInfinite);
+                var events = new[] { regChangedEvent, _cancellationEvent };
+                var isCanceled = false;
 
-                switch (triggered)
+                while (!isCanceled)
                 {
-                    case WAIT_EVENT.WAIT_OBJECT_0:
-                        RegistryChanged?.Invoke(this, EventArgs.Empty);
-                        continue;
-                    case WAIT_EVENT.WAIT_OBJECT_0 + 1:
-                        isCanceled = true;
-                        break;
-                    default: throw new Win32Exception();
+                    RegistryEventApi.TriggerUpRegistryEvent(_regHandle, regChangedEvent, _watchSubtree);
+                    var triggered = RegistryEventApi.WaitForMultiplyEvents
+                        (events, false, TimeoutInfinite);
+
+                    switch (triggered)
+                    {
+                        case WAIT_EVENT.WAIT_OBJECT_0:
+                            RegistryChanged?.Invoke(this, EventArgs.Empty);
+                            continue;
+                        case WAIT_EVENT.WAIT_OBJECT_0 + 1:
+                            isCanceled = true;
+                            break;
+                        default: throw new Win32Exception();
+                    }
                 }
             }
         }
@@ -105,7 +96,7 @@ namespace PhoenixTools.Watchers
             {
                 //dispose managed state (managed objects)
                 Stop();
-                _key.Dispose();
+                _regHandle.Dispose();
                 _cancellationEvent.Dispose();
                 RegistryChanged = null;
             }
@@ -115,13 +106,5 @@ namespace PhoenixTools.Watchers
             _disposed = true;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void CheckDisposed()
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(nameof(RegistryWatcher));
-        }
-
         #endregion
-    }
-}
+    } }
