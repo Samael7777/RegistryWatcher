@@ -41,6 +41,10 @@ specified subkey changes.</Description>
     </PackageReference>
   </ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETStandard'">
+		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+	</ItemGroup>
+
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
 	  <PackageReference Include="System.Memory" Version="4.6.3" />
 	  <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
