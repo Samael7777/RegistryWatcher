@@ -4,12 +4,13 @@ using Timer = System.Timers.Timer;
 
 namespace PhoenixTools.Watchers
 {
+    [Obsolete]
     public class EventsFilter : IDisposable
     {
         private readonly Timer _timer;
-        private EventArgs _eventArgs;
+        private EventArgs? _eventArgs;
 
-        public event EventHandler Filtered;
+        public event EventHandler? Filtered;
 
         public EventsFilter(double filterTimeMs)
         {
@@ -21,7 +22,7 @@ namespace PhoenixTools.Watchers
             FilterTimeMilliseconds = filterTimeMs;
         }
 
-        private void OnTimer(object sender, ElapsedEventArgs e)
+        private void OnTimer(object? sender, ElapsedEventArgs e)
         {
             var args = _eventArgs ?? EventArgs.Empty;
             Filtered?.Invoke(this, args);
@@ -33,7 +34,7 @@ namespace PhoenixTools.Watchers
             set => _timer.Interval = value;
         }
 
-        public void Input(object sender, EventArgs args)
+        public void Input(object? sender, EventArgs args)
         {
             _eventArgs = args;
             _timer.Start();
