@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net6.0-windows;net8.0-windows;net10.0-windows</TargetFrameworks>
+    <TargetFrameworks>net48;netstandard2.1;net6.0-windows;net8.0-windows;net10.0-windows</TargetFrameworks>
 	  <LangVersion>latest</LangVersion>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -19,7 +19,7 @@ specified subkey changes.</Description>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Version>1.2.0</Version>
+    <Version>1.1.1</Version>
     <PackageReleaseNotes>Using CsWin32</PackageReleaseNotes>
   </PropertyGroup>
 
@@ -40,6 +40,10 @@ specified subkey changes.</Description>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETStandard'">
+		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+	</ItemGroup>
 
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
 	  <PackageReference Include="System.Memory" Version="4.6.3" />
