@@ -20,7 +20,7 @@ specified subkey changes.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Version>1.2.0</Version>
-    <PackageReleaseNotes>Add </PackageReleaseNotes>
+    <PackageReleaseNotes>See README.md</PackageReleaseNotes>
   </PropertyGroup>
 
 	<PropertyGroup>
