@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net48;netstandard2.1;net6.0-windows;net8.0-windows;net10.0-windows</TargetFrameworks>
-	  <LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>PhoenixTools.Watchers</RootNamespace>
@@ -19,11 +19,17 @@ specified subkey changes.</Description>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Version>1.1.1</Version>
-    <PackageReleaseNotes>Using CsWin32</PackageReleaseNotes>
+    <Version>1.2.0</Version>
+    <PackageReleaseNotes>Add </PackageReleaseNotes>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<PolySharpExcludeGeneratedTypes>
+			System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute
+		</PolySharpExcludeGeneratedTypes>
+	</PropertyGroup>
+
+	<ItemGroup>
     <None Include="LICENSE.txt">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
@@ -35,7 +41,7 @@ specified subkey changes.</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.333">
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.335">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -45,9 +51,19 @@ specified subkey changes.</Description>
 		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
 	</ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-	  <PackageReference Include="System.Memory" Version="4.6.3" />
-	  <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
-    </ItemGroup>
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+		<PackageReference Include="System.Memory" Version="4.6.3" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or
+           '$(TargetFrameworkIdentifier)' == '.NETStandard' Or 
+		    ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And
+                           '$(TargetFrameworkVersion)' == 'v6.0')">
+	<PackageReference Include="PolySharp" Version="1.16.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	</ItemGroup>
 
 </Project>

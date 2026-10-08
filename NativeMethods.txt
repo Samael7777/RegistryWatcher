@@ -3,3 +3,4 @@ CreateEvent
 SetEvent
 ResetEvent
 WaitForMultipleObjects
+MAXIMUM_WAIT_OBJECTS
